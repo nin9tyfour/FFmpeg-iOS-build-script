@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # directories
-SOURCE="ffmpeg-2.6.2"
+SOURCE="ffmpeg-2.6.1"
 FAT="FFmpeg-iOS"
 
 SCRATCH="scratch"
@@ -9,15 +9,18 @@ SCRATCH="scratch"
 THIN=`pwd`/"thin"
 
 # absolute path to x264 library
-#X264=`pwd`/fat-x264
+# X264=`pwd`/fat-x264
 
 #FDK_AAC=`pwd`/fdk-aac/fdk-aac-ios
 
-CONFIGURE_FLAGS="--enable-cross-compile --disable-debug --disable-programs \
-                 --disable-doc --enable-pic"
+CONFIGURE_FLAGS="--enable-cross-compile --disable-debug \
+                 --disable-doc --enable-pic --enable-libvpx \
+                 --disable-static --enable-shared \
+                 --extra-cflags=-I/usr/local/include --extra-ldflags=-L/usr/local/lib"
 
 if [ "$X264" ]
 then
+	echo "Using x.264 encoder."
 	CONFIGURE_FLAGS="$CONFIGURE_FLAGS --enable-gpl --enable-libx264"
 fi
 
@@ -29,7 +32,7 @@ fi
 # avresample
 #CONFIGURE_FLAGS="$CONFIGURE_FLAGS --enable-avresample"
 
-ARCHS="arm64 armv7 x86_64 i386"
+ARCHS="arm64 armv7s armv7 x86_64 i386"
 
 COMPILE="y"
 LIPO="y"
